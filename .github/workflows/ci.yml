@@ -17,13 +17,13 @@ jobs:
 
       - name: Build and test containers
         run: |
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml up -d db
+          docker compose -f docker-compose.yml build
+          docker compose -f docker-compose.yml up -d db
           
           docker run --rm --network host byrnedo/alpine-curl:latest sh -c "until nc -z db 5432; do sleep 1; done"
-          docker-compose -f docker-compose.yml up -d web
+          docker compose -f docker-compose.yml up -d web
           
           curl --fail http://localhost/health/
 
       - name: Teardown
-        run: docker-compose -f docker-compose.yml down
+        run: docker compose -f docker-compose.yml down
