@@ -5,27 +5,16 @@ services:
     command: ["gunicorn", "test_task_config.wsgi:application", "--bind", "0.0.0.0:8080"]
     volumes:
       - ./test_task_config/:/usr/src/app/
-    environment:
-      - DEBUG=${DEBUG}
-      - SECRET_KEY=${SECRET_KEY}
-      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
-      - SQL_ENGINE=${SQL_ENGINE}
-      - SQL_DATABASE=${SQL_DATABASE}
-      - SQL_USER=${SQL_USER}
-      - SQL_PASSWORD=${SQL_PASSWORD}
-      - SQL_HOST=${SQL_HOST}
-      - SQL_PORT=${SQL_PORT}
+    env_file:
+      - env.dev
     depends_on:
       - db
   db:
     image: postgres:16.4-alpine3.20
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - PGDATA=${PGDATA}
+    env_file:
+      - env.db
     ports:
       - "5432:5432"
     restart: unless-stopped
