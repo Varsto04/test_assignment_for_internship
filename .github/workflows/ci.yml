@@ -8,6 +8,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DEBUG: ${{ secrets.DEBUG }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
+      SQL_ENGINE: ${{ secrets.SQL_ENGINE }}
+      SQL_DATABASE: ${{ secrets.SQL_DATABASE }}
+      SQL_USER: ${{ secrets.SQL_USER }}
+      SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+      SQL_HOST: ${{ secrets.SQL_HOST }}
+      SQL_PORT: ${{ secrets.SQL_PORT }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      PGDATA: ${{ secrets.PGDATA }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -26,7 +40,7 @@ jobs:
       - name: Test health endpoint
         run: |
           sleep 5
-          curl --fail http://localhost:8080/health/
+          curl --fail http://localhost:80/health/
 
       - name: Teardown
         run: docker compose -f docker-compose.yml down
